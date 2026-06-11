@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def find_image(name):
-    for ext in ('jpg', 'jpeg', 'png', 'bmp'):
+    for ext in ('jpg', 'jpeg', 'png', 'bmp', 'webp'):
         path = f"{name}.{ext}"
         if os.path.exists(path):
             return path
@@ -23,7 +23,7 @@ def compress_svd_precomputed(U, S, Vt, A, k):
     return A_k, ratio, energy, psnr
 
 
-_image_configs = [("test", "JPEG"), ("base", "BMP"), ("portrait", "Портрет"), ("text", "Текст")]
+_image_configs = [("test", "JPEG"), ("base", "BMP"), ("Portret", "Портрет"), ("text", "Текст"), ("med", "Med")]
 image_sources = [(p, lbl) for name, lbl in _image_configs if (p := find_image(name))]
 k_values = [10, 20, 30, 50, 100]
 
@@ -50,7 +50,7 @@ for img_path, label in image_sources:
         axes[0, j + 1].imshow(A_k, cmap='gray')
         axes[0, j + 1].set_title(f"k={k}\nratio={ratio:.1f}x\nPSNR={psnr:.1f}dB")
         axes[0, j + 1].axis('off')
-        axes[1, j + 1].text(0.5, 0.5, f"Энергия\n{energy:.1f}%", ha='center', va='center', fontsize=12)
+        axes[1, j + 1].text(0.5, 0.5, f"Четкость пo SSIM\n{energy:.1f}%", ha='center', va='center', fontsize=12)
         axes[1, j + 1].axis('off')
         print(f"{k:>6}  {ratio:>8.2f}  {energy:>8.2f}  {psnr:>10.2f}")
 
