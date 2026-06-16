@@ -13,10 +13,9 @@ def find_image(name):
     return None
 
 
-def compact_svd(U, s, Vt, tol=None):
-    if tol is None:
-        tol = s[0] * max(U.shape[0], Vt.shape[1]) * np.finfo(float).eps
-    r = int(np.sum(s > tol))
+def compact_svd(U, s, Vt):
+    r = int(np.sum(s > 0))
+    r = max(r, 1)
     return U[:, :r], s[:r], Vt[:r, :], r
 
 
