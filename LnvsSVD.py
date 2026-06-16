@@ -16,12 +16,17 @@ def find_image(name):
 
 def trunc_svd(X, k):
     U, s, Vt = np.linalg.svd(X, full_matrices=False)
-    return U[:, :k] @ np.diag(s[:k]) @ Vt[:k, :]
+    tol = s[0] * max(X.shape) * np.finfo(float).eps if s[0] > 0 else 0
+    r_compact = max(1, int(np.sum(s > tol)))
+    r = min(k, r_compact)
+    return U[:, :r] @ np.diag(s[:r]) @ Vt[:r, :]
 
 
 def trunc_svd_pre(U, s, Vt, k):
-    k = min(k, len(s))
-    return U[:, :k] @ np.diag(s[:k]) @ Vt[:k, :]
+    tol = s[0] * max(U.shape[0], Vt.shape[1]) * np.finfo(float).eps if s[0] > 0 else 0
+    r_compact = max(1, int(np.sum(s > tol)))
+    r = min(k, r_compact)
+    return U[:, :r] @ np.diag(s[:r]) @ Vt[:r, :]
 
 
 def build_weights(A):
